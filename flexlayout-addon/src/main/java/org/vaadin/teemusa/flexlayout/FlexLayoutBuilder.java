@@ -1,5 +1,8 @@
 package org.vaadin.teemusa.flexlayout;
 
+/**
+ * Builder class for configuring and building FlexLayouts.
+ */
 public class FlexLayoutBuilder {
 
     @FunctionalInterface
