@@ -37,14 +37,19 @@ public class DemoUI extends UI {
 
         NativeSelect<FlexDirection> direction = new NativeSelect<>("Flex Direction");
         direction.setItems(FlexDirection.values());
+        direction.setEmptySelectionAllowed(false);
         NativeSelect<FlexWrap> wrapping = new NativeSelect<>("Flex Wrap");
         wrapping.setItems(FlexWrap.values());
+        wrapping.setEmptySelectionAllowed(false);
         NativeSelect<AlignItems> itemAlign = new NativeSelect<>("Align Items");
         itemAlign.setItems(AlignItems.values());
+        itemAlign.setEmptySelectionAllowed(false);
         NativeSelect<JustifyContent> contentJustify = new NativeSelect<>("Justify Content");
         contentJustify.setItems(JustifyContent.values());
+        contentJustify.setEmptySelectionAllowed(false);
         NativeSelect<AlignContent> contentAlign = new NativeSelect<>("Align Content");
         contentAlign.setItems(AlignContent.values());
+        contentAlign.setEmptySelectionAllowed(false);
 
         layoutEditor.addComponents(direction, wrapping, itemAlign, contentJustify, contentAlign);
 
@@ -65,6 +70,11 @@ public class DemoUI extends UI {
         flexLayout.setHeight("400px");
 
         layoutBinder.setBean(flexLayout);
+        direction.setValue(FlexDirection.getDefault());
+        wrapping.setValue(FlexWrap.getDefault());
+        itemAlign.setValue(AlignItems.getDefault());
+        contentAlign.setValue(AlignContent.getDefault());
+        contentJustify.setValue(JustifyContent.getDefault());
 
         setContent(new VerticalLayout(layoutEditor, flexLayout));
     }
