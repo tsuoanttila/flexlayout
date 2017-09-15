@@ -1,3 +1,4 @@
 .flexlayout {
 	display: flex;
+	overflow: auto;
 }
