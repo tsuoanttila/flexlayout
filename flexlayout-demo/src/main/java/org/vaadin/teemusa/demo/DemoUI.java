@@ -1,21 +1,20 @@
 package org.vaadin.teemusa.demo;
 
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Binder;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.vaadin.teemusa.flexlayout.*;
 
 import javax.servlet.annotation.WebServlet;
 
 @Theme("demo")
 @Title("FlexLayout Add-on Demo")
+@PreserveOnRefresh
 @SuppressWarnings("serial")
 public class DemoUI extends UI {
 
@@ -62,12 +61,25 @@ public class DemoUI extends UI {
 
         FlexLayout flexLayout = new FlexLayout();
         for (int i = 0; i < 100; ++i) {
-            Label l = new Label("Label " + i);
-            l.setSizeUndefined();
-            flexLayout.addComponent(l);
+            Component c;
+            if (i % 5 == 0) {
+                c = new Button("Button " + i);
+            } else {
+                String labelText = "Label " + i;
+                if (i % 3 == 0) {
+                    labelText = "Extra long " + labelText;
+                }
+                c = new Label(labelText);
+            }
+            c.setSizeUndefined();
+            if (i % 7 == 0) {
+                c.setHeight("50px");
+            }
+            flexLayout.addComponent(c);
         }
         flexLayout.setWidth("100%");
         flexLayout.setHeight("400px");
+        flexLayout.addStyleName("demolayout");
 
         layoutBinder.setBean(flexLayout);
         direction.setValue(FlexDirection.getDefault());
