@@ -87,6 +87,15 @@ public class FlexLayout extends Composite implements Layout {
         flexLayoutControl.setFlexAttribute(alignContent.getClass().getSimpleName(), alignContent.name());
     }
 
+    /**
+     * Sets alignment for individual component.
+     *
+     * @param component the component to align
+     * @param alignment the desired alignment
+     */
+    public void setComponentAlignment(Component component, AlignItems alignment) {
+        flexLayoutControl.setComponentAlignment(component, alignment);
+    }
 
     @Override
     public void addComponent(Component component) {

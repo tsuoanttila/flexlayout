@@ -88,6 +88,24 @@ public class DemoUI extends UI {
         contentAlign.setValue(AlignContent.getDefault());
         contentJustify.setValue(JustifyContent.getDefault());
 
-        setContent(new VerticalLayout(layoutEditor, flexLayout));
+        FlexLayout componentAlignLayout = FlexLayout.create().vertical().build();
+        Label left = new Label("Left");
+        Label middle = new Label("Middle");
+        Label right = new Label("Right");
+        Label base = new Label("Baseline");
+        componentAlignLayout.addComponents(left, middle, right, base);
+        componentAlignLayout.setComponentAlignment(left, AlignItems.FlexStart);
+        componentAlignLayout.setComponentAlignment(middle, AlignItems.Center);
+        componentAlignLayout.setComponentAlignment(right, AlignItems.FlexEnd);
+        componentAlignLayout.setComponentAlignment(base, AlignItems.Baseline);
+        base.addContextClickListener(e -> {
+            componentAlignLayout.removeComponent(base);
+            componentAlignLayout.setJustifyContent(JustifyContent.FlexEnd);
+        });
+
+        componentAlignLayout.setWidth("100%");
+        componentAlignLayout.setHeightUndefined();
+
+        setContent(new VerticalLayout(layoutEditor, flexLayout, componentAlignLayout));
     }
 }
