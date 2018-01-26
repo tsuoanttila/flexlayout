@@ -1,110 +1,131 @@
-# MyComponent Add-on for Vaadin 8
+# FlexLayout Add-on for Vaadin 8
 
-${ComponentClassName} is a UI component add-on for Vaadin 8.
+FlexLayout is a UI component add-on for Vaadin 8. This add-on brings the configuration of CSS Flexbox to the Java.
 
-## Online demo
+This add-on does is implemented without the need for widgetset changes. It can be imported to a project without the need for client-side compilation.
 
-Try the add-on demo at <url of the online demo>
+## FlexLayout Terminology
 
-## Download release
+### Slot
 
-Official releases of this add-on are available at Vaadin Directory. For Maven instructions, download and reviews, go to http://vaadin.com/addon/FlexLayout
+The `Flexbox` calucates an area inside the layout for each item. This area is here on known as `slot`.
 
-## Building and running demo
+Usually `slot` is the smallest space that fits the item in it. This can be modified with content justification and alignment.
 
-git clone <url of the MyComponent repository>
-mvn clean install
-cd demo
-mvn jetty:run
+### FlexDirection
 
-To see the demo, navigate to http://localhost:8080/
+`FlexDirection` is the main control for setting the direction of the `FlexLayout`. This direction is referred as `main-axis` later in this README.
 
-## Development with Eclipse IDE
+| Name          | Actual direction         |
+| ------------- | ------------------------ |
+| *Row*         | Horizontal               |
+| RowReverse    | Horizontal Right-To-Left |
+| Column        | Vertical                 |
+| ColumnReverse | Vertical Bottom-To-Top   |
 
-For further development of this add-on, the following tool-chain is recommended:
-- Eclipse IDE
-- m2e wtp plug-in (install it from Eclipse Marketplace)
-- Vaadin Eclipse plug-in (install it from Eclipse Marketplace)
-- JRebel Eclipse plug-in (install it from Eclipse Marketplace)
-- Chrome browser
+### FlexWrap
 
-### Importing project
+`FlexWrap` determines if the layout is wrapping to next row or column or should scrolling be used.
 
-Choose File > Import... > Existing Maven Projects
+Default mode, `Nowrap`, will use scrolling. `WrapReverse` will wrap to previous row or column.
 
-Note that Eclipse may give "Plugin execution not covered by lifecycle configuration" errors for pom.xml. Use "Permanently mark goal resources in pom.xml as ignored in Eclipse build" quick-fix to mark these errors as permanently ignored in your project. Do not worry, the project still works fine. 
+### JustifyContent
 
-### Debugging server-side
+`JustifyContent` defines the justification and spacing. This is relevant to the `main-axis` of the layout.
 
-If you have not already compiled the widgetset, do it now by running vaadin:install Maven target for FlexLayout-root project.
+| Name         | Effect                                               |
+| ------------ | ---------------------------------------------------- |
+| *FlexStart*  | Content placed at the start of the layout            |
+| FlexEnd      | Content placed at the end of the layout              |
+| Center       | Content placed in middle of the layout               |
+| SpaceBetween | All empty space is between the items                 |
+| SpaceAround  | All empty space is divided around each item          |
+| SpaceEvenly  | All empty space is used to make evenly sized `slots` |
 
-If you have a JRebel license, it makes on the fly code changes faster. Just add JRebel nature to your FlexLayout-demo project by clicking project with right mouse button and choosing JRebel > Add JRebel Nature
+Using `FlexStart`, `FlexEnd` or `Center` will not do any spacing around the items.
 
-To debug project and make code modifications on the fly in the server-side, right-click the FlexLayout-demo project and choose Debug As > Debug on Server. Navigate to http://localhost:8080/FlexLayout-demo/ to see the application.
+### AlignContent
 
-### Debugging client-side
+`AlignContent` is used to determine how the `slots` behave perpendicular to the `main-axis` (from now on known as `cross-axis`).
 
-Debugging client side code in the FlexLayout-demo project:
-  - run "mvn vaadin:run-codeserver" on a separate console while the application is running
-  - activate Super Dev Mode in the debug window of the application or by adding ?superdevmode to the URL
-  - You can access Java-sources and set breakpoints inside Chrome if you enable source maps from inspector settings.
- 
-## Release notes
+| Name         | Effect                                               |
+| ------------ | ---------------------------------------------------- |
+| FlexStart    | Items are aligned to `top` or `start of row`         |
+| FlexEnd      | Items are aligned to `bottom` or `end of row`        |
+| Center       | Items are centered in the middle of the `cross-axis` |
+| SpaceBetween | All empty space is between the items                 |
+| SpaceAround  | All empty space is divided around each item          |
+| *Stretch*    | `Slots` are stretched to fill all available content  |
 
-### Version 1.0-SNAPSHOT
-- ...
-- ...
+Using `FlexStart`, `FlexEnd` or `Center` will not do any spacing around the items.
 
-## Roadmap
+`SpaceBetween` and `SpaceAround` should only be used with `FlexWrap`.
 
-This component is developed as a hobby with no public roadmap or any guarantees of upcoming releases. That said, the following features are planned for upcoming releases:
-- ...
-- ...
+`Stretch` is required for `AlignItems` to work properly.
 
-## Issue tracking
+### AlignItems
 
-The issues for this add-on are tracked on its github.com page. All bug reports and feature requests are appreciated. 
+`AlignItems` determines the alignment of item along the `cross-axis` inside it's slot.
 
-## Contributions
+| Name       | Effect                                          |
+| ---------- | ----------------------------------------------- |
+| FlexStart  | Items are aligned to the start of the `slot`    |
+| FlexEnd    | Items are aligned to the end of the `slot`      |
+| Center     | Items are aligned in the middle of the `slot`   |
+| Stretch    | Items are stretched to occupy the whole `slot`  |
+| *Baseline* | Items are aligned so that their baselines align |
 
-Contributions are welcome, but there are no guarantees that they are accepted as such. Process for contributing is the following:
-- Fork this project
-- Create an issue to this project about the contribution (bug or feature) if there is no such issue about it already. Try to keep the scope minimal.
-- Develop and test the fix or functionality carefully. Only include minimum amount of code needed to fix the issue.
-- Refer to the fixed issue in commit
-- Send a pull request for the original project
-- Comment on the original issue that you have implemented a fix for it
+## Code Examples
 
-## License & Author
+### Horizontal FlexLayout for evenly spaced controls
 
-Add-on is distributed under Apache License 2.0. For license terms, see LICENSE.txt.
+This example layout can be used to create a row of controls. Using the `FlexLayout` builder:
+```
+FlexLayout.create().horizontal()
+    .alignItems().center()
+    .justifyContent().spaceAround()
+    .alignContent().spaceBetween()
+    .nowrap()
+    .build();
+```
 
-MyComponent is written by <...>
+Through traditional API:
+```
+FlexLayout horizontal = new FlexLayout();
+horizontal.setFlexDirection(FlexDirection.Row);
+horizontal.setAlignItems(AlignItems.Center);
+horizontal.setJustifyContent(JustifyContent.SpaceAround);
+horizontal.setAlignContent(AlignContent.SpaceBetween);
+horizontal.setFlexWrap(FlexWrap.Nowrap);
+```
 
-# Developer Guide
+### Vertical FlexLayout with columns aligned to end
 
-## Getting started
+This example layout places all items on columns.
+```
+FlexLayout.create().vertical()
+    .alignItems().end()
+    .alignContent().stretch()
+    .justifyContent().spaceBetween()
+    .wrap()
+    .build();
+```
 
-Here is a simple example on how to try out the add-on component:
+Through traditional API:
+```
+FlexLayout vertical = new FlexLayout();
+vertical.setFlexDirection(FlexDirection.Column);
+vertical.setAlignItems(AlignItems.FlexEnd);
+vertical.setJustifyContent(JustifyContent.SpaceBetween);
+vertical.setAlignContent(AlignContent.Stretch);
+vertical.setFlexWrap(FlexWrap.Wrap);
+```
 
-<...>
+## Changelog
 
-For a more comprehensive example, see src/test/java/org/vaadin/template/demo/DemoUI.java
+### 0.1
 
-## Features
+This is the initial release version of FlexLayout. 
 
-### Feature A
-
-<...>
-
-### Feature B
-
-<...>
-
-### Feature C
-
-<...>
-
-## API
-
-MyComponent JavaDoc is available online at <...>
+- Configuration for `FlexDirection`, `FlexWrap`, `JustifyContent`, `AlignContent`, `AlignItems`.
+- Builder for creating your `FlexLayout`.
