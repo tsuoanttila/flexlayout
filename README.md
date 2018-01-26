@@ -2,7 +2,7 @@
 
 FlexLayout is a UI component add-on for Vaadin 8. This add-on brings the configuration of CSS Flexbox to the Java.
 
-This add-on does is implemented without the need for widgetset changes. It can be imported to a project without the need for client-side compilation.
+This add-on is implemented without the need for widgetset changes. It can be imported to a project without the need for client-side compilation.
 
 ## FlexLayout Terminology
 
