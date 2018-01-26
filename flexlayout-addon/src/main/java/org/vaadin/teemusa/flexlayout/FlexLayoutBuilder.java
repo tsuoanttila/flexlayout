@@ -83,7 +83,7 @@ public class FlexLayoutBuilder {
          *
          * @return the flex layout builder
          */
-        default FlexLayoutBuilder strecth() {
+        default FlexLayoutBuilder stretch() {
             getBuilder().alignContent = AlignContent.Stretch;
             return getBuilder();
         }

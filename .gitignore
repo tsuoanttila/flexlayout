@@ -3,3 +3,6 @@
 target/
 styles.css
 styles.scss.cache
+.project
+.settings
+.classpath

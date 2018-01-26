@@ -1,16 +1,21 @@
 package org.vaadin.teemusa.demo;
 
+import javax.servlet.annotation.WebServlet;
+
+import org.vaadin.teemusa.flexlayout.FlexLayout;
+
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.data.Binder;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.*;
-import org.vaadin.teemusa.flexlayout.*;
-
-import javax.servlet.annotation.WebServlet;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 @Theme("demo")
 @Title("FlexLayout Add-on Demo")
@@ -25,87 +30,33 @@ public class DemoUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        FlexLayout layoutEditor = FlexLayout.create()
-                .horizontal()
-                .alignItems().center()
-                .justifyContent().spaceAround()
-                .alignContent().spaceBetween()
-                .nowrap()
-                .build();
-        layoutEditor.setWidth("100%");
+        Panel container = new Panel();
 
-        NativeSelect<FlexDirection> direction = new NativeSelect<>("Flex Direction");
-        direction.setItems(FlexDirection.values());
-        direction.setEmptySelectionAllowed(false);
-        NativeSelect<FlexWrap> wrapping = new NativeSelect<>("Flex Wrap");
-        wrapping.setItems(FlexWrap.values());
-        wrapping.setEmptySelectionAllowed(false);
-        NativeSelect<AlignItems> itemAlign = new NativeSelect<>("Align Items");
-        itemAlign.setItems(AlignItems.values());
-        itemAlign.setEmptySelectionAllowed(false);
-        NativeSelect<JustifyContent> contentJustify = new NativeSelect<>("Justify Content");
-        contentJustify.setItems(JustifyContent.values());
-        contentJustify.setEmptySelectionAllowed(false);
-        NativeSelect<AlignContent> contentAlign = new NativeSelect<>("Align Content");
-        contentAlign.setItems(AlignContent.values());
-        contentAlign.setEmptySelectionAllowed(false);
+        Navigator navigator = new Navigator(this, container);
+        navigator.addView("fiddle", FiddleView.class);
+        navigator.addView("example", ExampleView.class);
 
-        layoutEditor.addComponents(direction, wrapping, itemAlign, contentJustify, contentAlign);
+        FlexLayout naviBar = FlexLayout.create().horizontal().justifyContent()
+                .spaceAround().alignContent().end().nowrap().build();
+        naviBar.addComponents(createNaviButton("fiddle"),
+                createNaviButton("example"));
+        naviBar.setHeight("41px");
 
-        Binder<FlexLayout> layoutBinder = new Binder<>();
-        layoutBinder.bind(direction, t -> null, FlexLayout::setFlexDirection);
-        layoutBinder.bind(wrapping, t -> null, FlexLayout::setFlexWrap);
-        layoutBinder.bind(itemAlign, t -> null, FlexLayout::setAlignItems);
-        layoutBinder.bind(contentAlign, t -> null, FlexLayout::setAlignContent);
-        layoutBinder.bind(contentJustify, t -> null, FlexLayout::setJustifyContent);
+        VerticalLayout content = new VerticalLayout(naviBar, container);
+        setContent(content);
+        navigator.navigateTo("fiddle");
 
-        FlexLayout flexLayout = new FlexLayout();
-        for (int i = 0; i < 100; ++i) {
-            Component c;
-            if (i % 5 == 0) {
-                c = new Button("Button " + i);
-            } else {
-                String labelText = "Label " + i;
-                if (i % 3 == 0) {
-                    labelText = "Extra long " + labelText;
-                }
-                c = new Label(labelText);
-            }
-            c.setSizeUndefined();
-            if (i % 7 == 0) {
-                c.setHeight("50px");
-            }
-            flexLayout.addComponent(c);
-        }
-        flexLayout.setWidth("100%");
-        flexLayout.setHeight("400px");
-        flexLayout.addStyleName("demolayout");
+        setSizeFull();
+        content.setSizeFull();
+        container.setSizeFull();
 
-        layoutBinder.setBean(flexLayout);
-        direction.setValue(FlexDirection.getDefault());
-        wrapping.setValue(FlexWrap.getDefault());
-        itemAlign.setValue(AlignItems.getDefault());
-        contentAlign.setValue(AlignContent.getDefault());
-        contentJustify.setValue(JustifyContent.getDefault());
+        content.setExpandRatio(container, 1.0f);
+    }
 
-        FlexLayout componentAlignLayout = FlexLayout.create().vertical().build();
-        Label left = new Label("Left");
-        Label middle = new Label("Middle");
-        Label right = new Label("Right");
-        Label base = new Label("Baseline");
-        componentAlignLayout.addComponents(left, middle, right, base);
-        componentAlignLayout.setComponentAlignment(left, AlignItems.FlexStart);
-        componentAlignLayout.setComponentAlignment(middle, AlignItems.Center);
-        componentAlignLayout.setComponentAlignment(right, AlignItems.FlexEnd);
-        componentAlignLayout.setComponentAlignment(base, AlignItems.Baseline);
-        base.addContextClickListener(e -> {
-            componentAlignLayout.removeComponent(base);
-            componentAlignLayout.setJustifyContent(JustifyContent.FlexEnd);
-        });
-
-        componentAlignLayout.setWidth("100%");
-        componentAlignLayout.setHeightUndefined();
-
-        setContent(new VerticalLayout(layoutEditor, flexLayout, componentAlignLayout));
+    public Button createNaviButton(String viewName) {
+        Button button = new Button(viewName,
+                e -> getNavigator().navigateTo(viewName));
+        button.setStyleName(ValoTheme.BUTTON_LINK);
+        return button;
     }
 }
