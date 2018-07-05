@@ -23,7 +23,7 @@
 		<Implementation-Version>${project.version}</Implementation-Version>
 		<!-- Must not change this because of the Directory -->
 		<Implementation-Title>${project.name}</Implementation-Title>
-        <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
+		<Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
 		<Vaadin-License-Title>Apache License 2.0</Vaadin-License-Title>
 		<Vaadin-Addon>${project.artifactId}-${project.version}.jar</Vaadin-Addon>
 	</properties>
@@ -42,7 +42,7 @@
 
 	<issueManagement>
 		<system>GitHub</system>
-        <url>https://github.com/tsuoanttila/flexlayout/issues</url>
+		<url>https://github.com/tsuoanttila/flexlayout/issues</url>
 	</issueManagement>
 
 	<licenses>
@@ -66,18 +66,42 @@
 			<artifactId>vaadin-server</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client</artifactId>
-			<version>${vaadin.version}</version>
-			<scope>provided</scope>
-		</dependency>
 
-		<!-- This can be replaced with TestNG or some other test framework supported by the surefire plugin -->
+		<!-- This can be replaced with TestNG or some other test framework supported 
+			by the surefire plugin -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-testbench</artifactId>
+			<version>5.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.vaadin.teemusa</groupId>
+			<artifactId>undertow-launcher</artifactId>
+			<version>0.1.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiled</artifactId>
+			<version>${vaadin.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-themes</artifactId>
+			<version>${vaadin.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>2.2.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -159,14 +183,14 @@
 			</plugin>
 		</plugins>
 
-		<!-- This is needed for the sources required by the client-side compiler to be
-			included in the produced JARs -->
+		<!-- This is needed for the sources required by the client-side compiler 
+			to be included in the produced JARs -->
 		<resources>
 			<resource>
 				<directory>src/main/java</directory>
 				<excludes>
-                    <exclude>rebel.xml</exclude>
-                </excludes>
+					<exclude>rebel.xml</exclude>
+				</excludes>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
