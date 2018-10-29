@@ -1,3 +1,6 @@
+[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/flexlayout-add-on)
+[![Stars on Vaadin Directory](https://img.shields.io/vaadin-directory/star/flexlayout-add-on.svg)](https://vaadin.com/directory/component/flexlayout-add-on)
+
 # FlexLayout Add-on for Vaadin 8
 
 FlexLayout is a UI component add-on for Vaadin 8. This add-on brings the configuration of CSS Flexbox to the Java.
